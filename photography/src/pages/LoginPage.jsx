@@ -1,15 +1,21 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import {UserContext} from '../UserContext.jsx'
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { user } = useContext(UserContext);
+
   const navigate = useNavigate();
 
   const {setUser} = useContext(UserContext);
-
+  useEffect(() => {
+    if(user != null){
+      navigate('/');
+    }
+  })
   const loginUser = async (event) => {
     event.preventDefault();
     try {

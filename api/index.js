@@ -95,4 +95,8 @@ app.get("/profile", verifyToken, (req, res) => {
   res.status(200).json({name, email, _id});
 });
 
+app.post('/logout', (req, res) => {
+  res.cookie('token', '').json(true);
+})
+
 app.listen(4000);
