@@ -16,12 +16,48 @@ export default function PackagePage() {
 
   const addPhotoByLink = async (e) => {
     e.preventDefault();
-    const {data : filename} = await axios.post("/upload-by-link", { link: photoLink });
-    setAddedPhotos(prev => {
-        return [...prev, filename];
-    })
+    const { data: filename } = await axios.post("/upload-by-link", {
+      link: photoLink,
+    });
+    setAddedPhotos((prev) => {
+      return [...prev, filename];
+    });
     setPhotoLink("");
   };
+
+  const uploadPhoto = (event) => {
+    event.preventDefault();
+    const files = event.target.files;
+    const data = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      data.append("photos", files[i]);
+    }
+    axios
+      .post("/upload", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((response) => {
+        const { data } = response;
+        console.log(response);
+        setAddedPhotos((prev) => {
+          return [...prev, ...data];
+        });
+      });
+  };
+
+  const onCheckBoxSelect = (event) => {
+    const {checked, name} = event.target;
+    if(checked) {
+      setPerks((prev) => {
+        return [...prev, name]
+      })
+
+    } else {
+      setPerks((prev) => {
+        return prev.filter((val) => val !== name);
+      })
+    }
+  }
   return (
     <div>
       {action != "new" && (
@@ -50,8 +86,8 @@ export default function PackagePage() {
       )}
 
       {action === "new" && (
-        <div>
-          <form className="mt-10">
+        <div className="flex justify-center">
+          <form className="mt-10 xl:w-4/5">
             <h4>Title</h4>
             <input
               type="text"
@@ -74,17 +110,31 @@ export default function PackagePage() {
                 onChange={(e) => setPhotoLink(e.target.value)}
                 placeholder="Add using a link"
               />
-              <button onClick={addPhotoByLink} className="px-4 rounded-2xl w-40">Add Photo</button>
+              <button
+                onClick={addPhotoByLink}
+                className="px-4 rounded-2xl w-40"
+              >
+                Add Photo
+              </button>
             </div>
-            {
-                addedPhotos.length > 0 && addedPhotos.map(link => (
-                    <p key={link}>
-                        {link}
-                    </p>
-                ))
-            }
-            <div className="mt-4 grid grid-cols-3 md:grid-cols-4 ">
-              <button className="flex gap-2 justify-center border bg-transparent rounded-2xl p-8 text-gray-600 text-2xl ">
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3 mt-2"></div>
+
+            <div className="mt-4 grid gap-2 grid-cols-3 md:grid-cols-4 ">
+              {addedPhotos.length > 0 &&
+                addedPhotos.map((link) => (
+                  <img
+                    className="rounded-xl onChange={() => onCheckBoxSelect('wifi')}"
+                    key={link}
+                    src={"http://localhost:4000/" + link}
+                  />
+                ))}
+              <label className="flex gap-2 h-32 items-center justify-center border bg-transparent rounded-2xl text-gray-600 text-xl cursor-pointer">
+                <input
+                  type="file"
+                  multiple
+                  className="hidden"
+                  onChange={uploadPhoto}
+                />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -100,7 +150,7 @@ export default function PackagePage() {
                   />
                 </svg>
                 Upload
-              </button>
+              </label>
             </div>
             <h4>Add Description</h4>
             <textarea
@@ -110,7 +160,7 @@ export default function PackagePage() {
             <h4>Perks</h4>
             <div className="grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4">
               <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-                <input type="checkbox" />
+                <input type="checkbox" name="wifi" onChange={onCheckBoxSelect}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -130,7 +180,7 @@ export default function PackagePage() {
               </label>
 
               <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-                <input type="checkbox" />
+                <input type="checkbox" name="Free Parking Spot" onChange={onCheckBoxSelect}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -150,7 +200,7 @@ export default function PackagePage() {
               </label>
 
               <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-                <input type="checkbox" />
+                <input type="checkbox" name="TV" onChange={onCheckBoxSelect}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -170,7 +220,7 @@ export default function PackagePage() {
               </label>
 
               <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-                <input type="checkbox" />
+                <input type="checkbox" name="Private Entrance" onChange={onCheckBoxSelect}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

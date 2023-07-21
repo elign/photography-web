@@ -1,10 +1,13 @@
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const User = require("./models/Users");
 const downloader = require("image-downloader");
+const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
@@ -17,8 +20,12 @@ const corsOptions = {
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
+// To be used to upload files from client to uploads folder
+app.use(express.static(`${__dirname}/uploads`));
+const photosMiddleware = multer({ dest: "uploads" });
 app.use(cors(corsOptions));
 app.use(cookieParser());
+//To show the uploaded media through browser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -109,6 +116,20 @@ app.post("/upload-by-link", async (req, res) => {
     dest: __dirname + "/uploads/" + newName,
   });
   res.status(200).json(newName);
+});
+
+app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
+  // Using multer Library to upload photos from client
+  const uploadedFiles = [];
+  for (let i = 0; i < req.files.length; i++) {
+    const { path, originalname, filename } = req.files[i];
+    const newFileName =
+      "photo" + Date.now() + "." + originalname.split(".").slice(-1);
+    const newPath = "uploads/" + newFileName;
+    fs.renameSync(path, newPath);
+    uploadedFiles.push(newFileName);
+  }
+  res.json(uploadedFiles);
 });
 
 app.listen(4000);
