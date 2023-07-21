@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const User = require("./models/Users");
+const downloader = require("image-downloader");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
@@ -91,12 +92,23 @@ app.get("/profile", verifyToken, (req, res) => {
       message: req.message,
     });
   }
-  const {name, email, _id} = req.user;
-  res.status(200).json({name, email, _id});
+  const { name, email, _id } = req.user;
+  res.status(200).json({ name, email, _id });
 });
 
-app.post('/logout', (req, res) => {
-  res.cookie('token', '').json(true);
-})
+app.post("/logout", (req, res) => {
+  res.cookie("token", "").json(true);
+});
+
+app.post("/upload-by-link", async (req, res) => {
+  const { link } = req.body;
+  //Using the library image-downloader
+  const newName = "photo" + Date.now() + ".jpg";
+  await downloader.image({
+    url: link,
+    dest: __dirname + "/uploads/" + newName,
+  });
+  res.status(200).json(newName);
+});
 
 app.listen(4000);
