@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const User = require("./models/Users");
+const Package = require("./models/Package");
 const downloader = require("image-downloader");
 const multer = require("multer");
 const jwt = require("jsonwebtoken");
@@ -131,5 +132,45 @@ app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
   }
   res.json(uploadedFiles);
 });
+
+app.post("/places", verifyToken, async (req, res) => {
+  const {
+    title,
+    address,
+    photos,
+    description,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuests,
+  } = req.body;
+
+  try {
+    const placeDoc = await Package.create({
+      owner: req.user._id,
+      title,
+      address,
+      photos,
+      description,
+      perks,
+      extraInfo,
+      checkIn,
+      checkOut,
+      maxGuests,
+    });
+
+    return res.status(200).json(placeDoc);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
+app.get('/packages',verifyToken, async(req, res) => {
+  const id = req.user._id;
+  const response = await Package.find({owner : id});
+  return res.status(200).json(response);
+
+})
 
 app.listen(4000);
