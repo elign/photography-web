@@ -17,7 +17,7 @@ export default function Perks({perks, setPerks}) {
         <h4>Perks</h4>
             <div className="grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4">
               <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-                <input type="checkbox" name="wifi" onChange={onCheckBoxSelect}/>
+                <input type="checkbox" checked={perks.includes('wifi')} name="wifi" onChange={onCheckBoxSelect}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -37,7 +37,7 @@ export default function Perks({perks, setPerks}) {
               </label>
 
               <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-                <input type="checkbox" name="Free Parking Spot" onChange={onCheckBoxSelect}/>
+                <input type="checkbox" checked={perks.includes('Free Parking Spot')} name="Free Parking Spot" onChange={onCheckBoxSelect}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -57,7 +57,7 @@ export default function Perks({perks, setPerks}) {
               </label>
 
               <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-                <input type="checkbox" name="TV" onChange={onCheckBoxSelect}/>
+                <input type="checkbox" checked={perks.includes('TV')} name="TV" onChange={onCheckBoxSelect}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -77,7 +77,7 @@ export default function Perks({perks, setPerks}) {
               </label>
 
               <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-                <input type="checkbox" name="Private Entrance" onChange={onCheckBoxSelect}/>
+                <input type="checkbox" checked={perks.includes('Private Entrance')} name="Private Entrance" onChange={onCheckBoxSelect}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

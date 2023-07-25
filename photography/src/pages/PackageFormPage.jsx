@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PhotosUploader from "../components/PhotosUploader";
 import Perks from "../components/Perks";
 
 export default function PackageFormPage() {
   const navigate = useNavigate();
-
+  const {id} = useParams();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [photos, setPhotos] = useState([]);
@@ -16,6 +16,12 @@ export default function PackageFormPage() {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
+
+  useEffect(() => {
+    axios.get(`/packages/${id}`).then (({data}) => {
+      console.log(data.title);
+    })
+  }, [id])
 
   function addNewPlace(event) {
     event.preventDefault();

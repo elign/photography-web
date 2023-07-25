@@ -166,11 +166,22 @@ app.post("/places", verifyToken, async (req, res) => {
   }
 });
 
-app.get('/packages',verifyToken, async(req, res) => {
+app.get("/packages", verifyToken, async (req, res) => {
   const id = req.user._id;
-  const response = await Package.find({owner : id});
+  const response = await Package.find({ owner: id });
   return res.status(200).json(response);
+});
 
-})
+app.get("/packages/:id", async (req, res) => {
+  const { id } = req.params;
+  Package.findById(id)
+    .then((response) => {
+      return res.status(200).json(response);
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).json(err);
+    });
+});
 
 app.listen(4000);

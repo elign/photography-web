@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { UserContext } from "../UserContext";
 import { useNavigate, Link, useParams } from "react-router-dom";
-import PackagePage from "./PackagePage";
+import PackagePage from "./PackagesPage";
 import axios from "axios";
 export default function AccountPage() {
   const { user, setUser } = useContext(UserContext);
