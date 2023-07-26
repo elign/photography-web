@@ -8,7 +8,7 @@ export default function PackagePage() {
   const [package_, setPackage] = useState([]);
 
   useEffect(() => {
-    axios.get("/packages").then(({ data }) => {
+    axios.get("/owner-packages").then(({ data }) => {
       console.log(data);
       setPackage(data);
     });

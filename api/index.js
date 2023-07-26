@@ -204,7 +204,7 @@ app.put("/package", verifyToken, (req, res) => {
     });
 });
 
-app.get("/packages", verifyToken, async (req, res) => {
+app.get("/owner-packages", verifyToken, async (req, res) => {
   const id = req.user._id;
   const response = await Package.find({ owner: id });
   return res.status(200).json(response);
@@ -220,6 +220,11 @@ app.get("/packages/:id", async (req, res) => {
       console.log(err);
       return res.status(500).json(err);
     });
+});
+
+app.get("/packages", async (req, res) => {
+  const pack = await Package.find();
+  res.status(200).json(pack);
 });
 
 app.listen(4000);
