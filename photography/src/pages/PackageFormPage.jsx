@@ -6,7 +6,7 @@ import Perks from "../components/Perks";
 
 export default function PackageFormPage() {
   const navigate = useNavigate();
-  const {id} = useParams();
+  const { id } = useParams();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [photos, setPhotos] = useState([]);
@@ -18,35 +18,61 @@ export default function PackageFormPage() {
   const [maxGuests, setMaxGuests] = useState(1);
 
   useEffect(() => {
-    axios.get(`/packages/${id}`).then (({data}) => {
-      console.log(data.title);
-    })
-  }, [id])
+    axios.get(`/packages/${id}`).then(({ data }) => {
+      setTitle(data.title);
+      setAddress(data.address);
+      setPhotos(data.photos);
+      setDescription(data.description);
+      setPerks(data.perks);
+      setExtraInfo(data.extraInfo);
+      setCheckIn(data.checkIn);
+      setCheckOut(data.checkOut);
+      setMaxGuests(data.maxGuests);
+    });
+  }, [id]);
 
   function addNewPlace(event) {
     event.preventDefault();
-    axios
-      .post("/places", {
-        title,
-        address,
-        photos,
-        description,
-        perks,
-        extraInfo,
-        checkIn,
-        checkOut,
-        maxGuests,
-      })
-      .then((message) => {
-        console.log(message);
-        navigate("/account/places");
-      })
-      .catch((err) => {
-        console.log(
-          "some error occurred while submiting the data to mongoDB",
-          err
-        );
-      });
+    const packageData = {
+      title,
+      address,
+      photos,
+      description,
+      perks,
+      extraInfo,
+      checkIn,
+      checkOut,
+      maxGuests,
+    };
+
+    if (id) {
+      axios
+        .put("/package", { id, ...packageData })
+        .then((message) => {
+          console.log(message);
+          navigate("/account/places");
+        })
+        .catch((err) => {
+          console.log(
+            "some error occurred while submiting the data to mongoDB",
+            err
+          );
+        });
+
+    } else {
+      axios
+        .post("/places", packageData)
+        .then((message) => {
+          console.log(message);
+          navigate("/account/places");
+        })
+        .catch((err) => {
+          console.log(
+            "some error occurred while submiting the data to mongoDB",
+            err
+          );
+        });
+    }
   }
 
   return (
@@ -67,10 +93,7 @@ export default function PackageFormPage() {
             onChange={(e) => setAddress(e.target.value)}
             placeholder="enter your address here"
           />
-          <PhotosUploader
-            addedPhotos={photos}
-            setAddedPhotos={setPhotos}
-          />
+          <PhotosUploader addedPhotos={photos} setAddedPhotos={setPhotos} />
           <h4>Add Description</h4>
           <textarea
             value={description}

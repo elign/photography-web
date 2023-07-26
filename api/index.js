@@ -166,6 +166,44 @@ app.post("/places", verifyToken, async (req, res) => {
   }
 });
 
+app.put("/package", verifyToken, (req, res) => {
+  const {
+    id,
+    title,
+    address,
+    photos,
+    description,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuests,
+  } = req.body;
+
+  Package.findById(id)
+    .then((placeDoc) => {
+      if (req.user._id == placeDoc.owner.toString()) {
+        placeDoc.set({
+          title,
+          address,
+          photos,
+          description,
+          perks,
+          extraInfo,
+          checkIn,
+          checkOut,
+          maxGuests,
+        });
+        placeDoc.save();
+        return res.status(200).json("Document Updated");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).json("Invalid ID");
+    });
+});
+
 app.get("/packages", verifyToken, async (req, res) => {
   const id = req.user._id;
   const response = await Package.find({ owner: id });
