@@ -25,7 +25,7 @@ export default function PackagePage() {
                   <div className="flex gap-3">
                     {pack.photos.length > 0 && (
                       <img
-                        className="w-48 rounded-md "
+                        className="w-48 h-72 rounded-md object-cover"
                         src={`http://localhost:4000/${pack.photos[0]}`}
                       />
                     )}

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function IndexPage() {
   const [packages, setPackages] = useState([]);
@@ -10,10 +11,10 @@ export default function IndexPage() {
   }, []);
 
   return (
-      <div className="grid grid-cols-2 gap-8 mt-10 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-y-8 gap-x-6 mt-10 md:grid-cols-3 lg:grid-cols-4">
         {
           packages.length > 0 && packages.map(pack => (
-            <div key={pack._id}>
+            <Link to={`/package/${pack._id}`} key={pack._id}>
               <div className="rounded-2xl flex">
                 {
                   pack.photos?.[0] && (
@@ -21,9 +22,12 @@ export default function IndexPage() {
                   )
                 }
               </div>
-              <h2 className="text-md leading-4">{pack.title}</h2>
-              <h3 className="text-sm font-bold">{pack.address}</h3>
-            </div>
+              <div className="pl-3 pt-3">
+              <h2 className="text-base">{pack.title}</h2>
+              <h3 className="text-xs text-gray-600">{pack.address}</h3>
+              <span className="text-sm font-bold text-primary">$ {pack.price} </span>
+              </div>
+            </Link>
           ))
         }
 

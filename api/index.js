@@ -143,7 +143,7 @@ app.post("/places", verifyToken, async (req, res) => {
     extraInfo,
     checkIn,
     checkOut,
-    maxGuests,
+    price,
   } = req.body;
 
   try {
@@ -157,7 +157,7 @@ app.post("/places", verifyToken, async (req, res) => {
       extraInfo,
       checkIn,
       checkOut,
-      maxGuests,
+      price,
     });
 
     return res.status(200).json(placeDoc);
@@ -177,7 +177,7 @@ app.put("/package", verifyToken, (req, res) => {
     extraInfo,
     checkIn,
     checkOut,
-    maxGuests,
+    price,
   } = req.body;
 
   Package.findById(id)
@@ -192,7 +192,7 @@ app.put("/package", verifyToken, (req, res) => {
           extraInfo,
           checkIn,
           checkOut,
-          maxGuests,
+          price,
         });
         placeDoc.save();
         return res.status(200).json("Document Updated");

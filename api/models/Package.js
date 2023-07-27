@@ -10,7 +10,7 @@ const packageSchema = new mongoose.Schema({
   extraInfo: String,
   checkIn: String,
   checkOut: String,
-  maxGuests: Number,
+  price: Number,
 });
 
 const PackageModel = mongoose.model("Package", packageSchema);

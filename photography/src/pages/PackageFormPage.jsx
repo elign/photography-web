@@ -15,7 +15,7 @@ export default function PackageFormPage() {
   const [extraInfo, setExtraInfo] = useState("");
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
-  const [maxGuests, setMaxGuests] = useState(1);
+  const [price, setPrice] = useState(1);
 
   useEffect(() => {
     axios.get(`/packages/${id}`).then(({ data }) => {
@@ -27,11 +27,11 @@ export default function PackageFormPage() {
       setExtraInfo(data.extraInfo);
       setCheckIn(data.checkIn);
       setCheckOut(data.checkOut);
-      setMaxGuests(data.maxGuests);
+      setPrice(data.price);
     });
   }, [id]);
 
-  function addNewPlace(event) {
+  function savePlace(event) {
     event.preventDefault();
     const packageData = {
       title,
@@ -42,7 +42,7 @@ export default function PackageFormPage() {
       extraInfo,
       checkIn,
       checkOut,
-      maxGuests,
+      price,
     };
 
     if (id) {
@@ -78,7 +78,7 @@ export default function PackageFormPage() {
   return (
     <>
       <div className="flex justify-center">
-        <form onSubmit={addNewPlace} className="mt-10 xl:w-4/5">
+        <form onSubmit={savePlace} className="mt-10 xl:w-4/5">
           <h4>Title</h4>
           <input
             type="text"
@@ -124,13 +124,14 @@ export default function PackageFormPage() {
               />
             </div>
             <div>
-              <span className="mt-2 -mb-2 text-sm">Max Guests</span>
+              <span className="mt-2 -mb-2 text-sm">Price</span>
               <input
-                value={maxGuests}
-                onChange={(e) => setMaxGuests(e.target.value)}
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
                 type="number"
               />
             </div>
+            
           </div>
           <button className="primary my-4">Save</button>
         </form>
