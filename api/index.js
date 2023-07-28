@@ -15,6 +15,7 @@ require("dotenv").config();
 const app = express();
 const jwtSecret = "someRandomStringYouCanEnterHere";
 const { verifyToken } = require("./middleware");
+const Booking = require("./models/Booking");
 
 const corsOptions = {
   origin: "http://localhost:5173",
@@ -225,6 +226,23 @@ app.get("/packages/:id", async (req, res) => {
 app.get("/packages", async (req, res) => {
   const pack = await Package.find();
   res.status(200).json(pack);
+});
+
+app.post("/bookings", (req, res) => {
+  const { packageId, name, email, number, price } = req.body;
+  Booking.create({
+    packageId,
+    name,
+    email,
+    number,
+    price,
+  })
+    .then((res) => {
+      res.status(200).json(res);
+    })
+    .catch((err) => {
+      res.status(500).json("Error Occurred");
+    });
 });
 
 app.listen(4000);
