@@ -228,21 +228,27 @@ app.get("/packages", async (req, res) => {
   res.status(200).json(pack);
 });
 
-app.post("/bookings", (req, res) => {
+app.post("/bookings", verifyToken, (req, res) => {
   const { packageId, name, email, number, price } = req.body;
   Booking.create({
     packageId,
+    user: req.user._id,
     name,
     email,
     number,
     price,
   })
-    .then((res) => {
-      res.status(200).json(res);
+    .then((response) => {
+      res.status(200).json(response);
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).json("Error Occurred");
     });
 });
 
+app.get("/bookings", verifyToken, async (req, res) => {
+  const user = req.user;
+  res.json( await Booking.find({ user: req.user._id }));
+});
 app.listen(4000);

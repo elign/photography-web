@@ -10,6 +10,8 @@ import AccountPage from "./pages/AccountPage";
 import SinglePackage from "./pages/SinglePackage";
 import PackageFormPage from "./pages/PackageFormPage";
 import PackagePage from "./pages/PackagePage";
+import BookingsPage from "./pages/BookingsPage";
+import BookingPage from "./pages/BookingPage";
 
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
@@ -27,6 +29,8 @@ function App() {
         <Route path="/account/packages/:id?" element={<PackageFormPage />} />
         <Route path="/packages/:id?" element={<SinglePackage />} />
         <Route path="/package/:id?" element={<PackagePage />} />
+        <Route path="/account/bookings" element={<BookingsPage />} />
+        <Route path="/account/bookings/:id" element={<BookingPage />} />
       </Route>
     </Routes>
     </UserContextProvider>
