@@ -59,7 +59,7 @@ export default function PackagePage() {
     <div className="mt-8 lg:w-3/4 m-auto">
       {pack && (
         <div className="-mx-4 px-8 py-6 bg-gray-100">
-          <h1 className="text-3xl font-bold ">{pack.title}</h1>
+          <h1 className="text-2xl md:text-3xl font-bold ">{pack.title}</h1>
           <p className="block font-basic text-sm pb-4">{pack.address}</p>
           <div className="relative">
             <div
@@ -113,7 +113,7 @@ export default function PackagePage() {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-[2fr_1fr]">
             <div>
               <h2 className="my-4 font-semibold text-2xl">Description</h2>
-              <p className="text-justify">{pack.description}</p>
+              <p className="text-justify pb-4">{pack.description}</p>
               <b>Check-in: {pack.checkIn}</b>
               <br />
               <b>Check-out: {pack.checkOut}</b>
