@@ -17,7 +17,7 @@ const verifyToken = (req, res, next) => {
           }
 
           User.findOne({
-            _id: decode.id,
+            _id: decode?.id,
           })
             .then((user) => {
               req.user = user;

@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 const User = require("./models/Users");
 const Package = require("./models/Package");
 const downloader = require("image-downloader");
+const nodemailer = require("nodemailer");
 const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -228,18 +229,51 @@ app.get("/packages", async (req, res) => {
   res.status(200).json(pack);
 });
 
-app.post("/bookings", verifyToken, (req, res) => {
-  const { packageId, name, email, number, price } = req.body;
+app.post("/bookings", (req, res) => {
+  const { packageId, name, email, number, price, date, numOfDays } = req.body;
   Booking.create({
     packageId,
-    user: req.user._id,
     name,
     email,
     number,
     price,
+    date: new Date(date),
+    numOfDays,
   })
     .then((response) => {
-      res.status(200).json(response);
+      //sending email to website owner via nodemailer
+      console.log(response);
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      });
+
+      const mailOptions = {
+        from: process.env.EMAIL,
+        to: process.env.EMAIL,
+        subject: `Photography website received a request from ${response.email}`,
+        html: `<h1>Request from ${email}</h1>
+              <h4>Name: ${name}</h4>
+              <h4>Number: ${number}</h4>
+              <h4>Link: ${`http://localhost:5173/package/${packageId.toString()}`}</h4>
+              <h4>Date: ${date}</h4>
+              <h4>Number Of Days: ${numOfDays}</h4>`,
+      };
+
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(info);
+        }
+      });
+
+      res
+        .status(200)
+        .json(`Thank you ${response.name} your request has been received.`);
     })
     .catch((err) => {
       console.log(err);
@@ -249,6 +283,6 @@ app.post("/bookings", verifyToken, (req, res) => {
 
 app.get("/bookings", verifyToken, async (req, res) => {
   const user = req.user;
-  res.json( await Booking.find({ user: req.user._id }));
+  res.json(await Booking.find({ user: req.user._id }));
 });
 app.listen(4000);

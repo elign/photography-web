@@ -110,8 +110,8 @@ export default function PackagePage() {
               More Photos
             </button>
           </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-[2fr_1fr]">
-            <div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-[4fr_3fr]">
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <h2 className="my-4 font-semibold text-2xl">Description</h2>
               <p className="text-justify pb-4">{pack.description}</p>
               <b>Check-in: {pack.checkIn}</b>
@@ -119,7 +119,9 @@ export default function PackagePage() {
               <b>Check-out: {pack.checkOut}</b>
               <br />
             </div>
-            <BookingForm price={pack.price} id={id}/>
+            <div style={{ flex: "1" }}>
+              <BookingForm price={pack.price} id={id} />
+            </div>
           </div>
           <div className="mt-6 border p-4 rounded-md">
             <h3 className="text-xl font-bold leading-10">Extra Info</h3>
