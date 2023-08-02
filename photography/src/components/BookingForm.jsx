@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { SpinningCircles } from "react-loading-icons";
 export default function BookingForm({ price, id }) {
   const [name, setName] = useState("");
@@ -11,7 +11,7 @@ export default function BookingForm({ price, id }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const bookThisPackage = () => {
     const data = { packageId: id, name, email, number, price, numOfDays, date };
     if (!name || !email || !number || !date || !numOfDays) {

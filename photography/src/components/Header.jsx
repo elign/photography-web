@@ -93,7 +93,7 @@ export default function Header() {
                   <Link to={"/"}>About</Link>
                 </li>
                 <li className="text-gray-900 lg:text-xl hover:text-primary">
-                  <Link to={"/"}>Contact</Link>
+                  <Link to={"/contact"}>Contact</Link>
                 </li>
               </ul>
             </div>
